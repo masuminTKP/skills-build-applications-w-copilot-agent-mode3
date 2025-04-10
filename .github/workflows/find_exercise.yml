@@ -1,0 +1,19 @@
+name: Find Exercise Issue
+
+on:
+  workflow_dispatch:
+
+jobs:
+  find_exercise:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify Exercise Issue Exists
+        run: |
+          issues=$(gh issue list --search "Exercise" --json number)
+          if [ -z "$issues" ]; then
+            echo "No issue with the prefix 'Exercise' found. Please create one before running this workflow."
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_TITLE_PREFIX: "Updated Prefix"
