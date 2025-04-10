@@ -1,6 +1,7 @@
 from djongo import models
 
 class User(models.Model):
+    id = models.ObjectIdField(primary_key=True)  # Change id to ObjectIdField
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=100)
     age = models.IntegerField()
@@ -9,6 +10,9 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        app_label = 'octofit_tracker'
+
 class Team(models.Model):
     name = models.CharField(max_length=100)
     members = models.ArrayField(model_container=User)
@@ -16,6 +20,9 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        app_label = 'octofit_tracker'
 
 class Activity(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -26,12 +33,18 @@ class Activity(models.Model):
     def __str__(self):
         return f"{self.activity_type} by {self.user.name}"
 
+    class Meta:
+        app_label = 'octofit_tracker'
+
 class Leaderboard(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     points = models.IntegerField()
 
     def __str__(self):
         return f"{self.user.name}: {self.points} points"
+
+    class Meta:
+        app_label = 'octofit_tracker'
 
 class Workout(models.Model):
     name = models.CharField(max_length=100)
@@ -40,3 +53,6 @@ class Workout(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        app_label = 'octofit_tracker'
